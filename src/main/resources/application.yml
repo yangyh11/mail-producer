@@ -1,0 +1,75 @@
+server:
+  servlet:
+    context-path: /mail-producer
+    session:
+      timeout: 900
+  port: 8081
+
+## spring配置
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: NON_NULL
+
+## 数据源配置
+druid:
+    type: com.alibaba.druid.pool.DruidDataSource
+    master:
+        url: jdbc:mysql://192.168.1.11:3306/mail?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: 111111
+        initialSize: 5
+        minIdle: 1
+        # maxIdle: 10 已经不再使用，配置了也没效果
+        maxActive: 100
+        maxWait: 6000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,wall,log4j
+        useGlobalDataSourceStat: true
+    slave:
+      url: jdbc:mysql://192.168.1.12:3306/mail?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: 111111
+      initialSize: 5
+      minIdle: 1
+      # maxIdle: 10 已经不再使用，配置了也没效果
+      maxActive: 100
+      maxWait: 6000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,log4j
+      useGlobalDataSourceStat: true
+
+
+mybatis:
+  type-aliases-package: com.yangyh.mail
+  mapper-locations: classpath:sql-mapper/*.xml
+
+logging:
+  level:
+    tk.mybatis: trace
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
